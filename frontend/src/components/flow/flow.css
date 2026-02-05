@@ -1,0 +1,422 @@
+/* ==========================================
+   REACT FLOW WORKFLOW EDITOR
+   ========================================== */
+
+.workflow-editor {
+    width: 100%;
+    height: 500px;
+    background: var(--bg-secondary);
+    border: 2px solid var(--border-light);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+}
+
+.workflow-editor-full {
+    height: 70vh;
+    min-height: 500px;
+}
+
+/* React Flow Overrides */
+.react-flow__node {
+    cursor: pointer;
+}
+
+.react-flow__controls {
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    box-shadow: var(--shadow-md);
+}
+
+.react-flow__controls-button {
+    background: var(--bg-secondary);
+    border-bottom: 1px solid var(--border-light);
+    fill: var(--text-primary);
+}
+
+.react-flow__controls-button:hover {
+    background: var(--bg-tertiary);
+}
+
+.react-flow__minimap {
+    background: var(--bg-secondary);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-md);
+}
+
+/* Custom Flow Nodes */
+.flow-node {
+    background: var(--bg-secondary);
+    border: 2px solid var(--border-light);
+    border-radius: var(--radius-lg);
+    padding: 16px 20px;
+    min-width: 180px;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    box-shadow: var(--shadow-sm);
+    transition: all 0.2s ease;
+}
+
+.flow-node:hover {
+    border-color: var(--primary-green);
+    box-shadow: var(--shadow-md);
+}
+
+.flow-node.selected {
+    border-color: var(--accent-lime);
+    box-shadow: 0 0 0 3px rgba(163, 230, 53, 0.3);
+}
+
+/* Start Node */
+.start-node {
+    background: var(--accent-lime);
+    border-color: var(--accent-lime-hover);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 20px;
+    min-width: auto;
+}
+
+.start-node .node-icon {
+    width: 32px;
+    height: 32px;
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: var(--radius-full);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-on-lime);
+}
+
+.start-node .node-label {
+    font-weight: 600;
+    color: var(--text-on-lime);
+}
+
+/* End Node */
+.end-node {
+    background: var(--primary-green);
+    border-color: var(--primary-green-hover);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 20px;
+    min-width: auto;
+}
+
+.end-node .node-icon {
+    width: 32px;
+    height: 32px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: var(--radius-full);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-on-dark);
+}
+
+.end-node .node-label {
+    font-weight: 600;
+    color: var(--text-on-dark);
+}
+
+/* Step Node */
+.step-node {
+    min-width: 220px;
+}
+
+.step-node .node-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.step-node .node-number {
+    width: 28px;
+    height: 28px;
+    background: var(--primary-green);
+    color: var(--text-on-dark);
+    border-radius: var(--radius-full);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    font-weight: 700;
+    flex-shrink: 0;
+}
+
+.step-node .node-title {
+    font-weight: 600;
+    color: var(--text-primary);
+    flex: 1;
+}
+
+.step-node .node-description {
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-top: 8px;
+    line-height: 1.5;
+}
+
+.step-node.has-condition {
+    border-color: var(--accent-lime);
+    background: linear-gradient(135deg, var(--bg-secondary) 0%, var(--accent-lime-light) 100%);
+}
+
+.condition-badge {
+    width: 24px;
+    height: 24px;
+    background: var(--accent-lime);
+    color: var(--text-on-lime);
+    border-radius: var(--radius-sm);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Node Handles */
+.node-handle {
+    width: 12px !important;
+    height: 12px !important;
+    background: var(--primary-green) !important;
+    border: 2px solid var(--bg-secondary) !important;
+}
+
+.node-handle:hover {
+    background: var(--accent-lime) !important;
+}
+
+/* Workflow Viewer Modal */
+.workflow-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(26, 58, 47, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    backdrop-filter: blur(4px);
+}
+
+.workflow-modal-content {
+    background: var(--bg-secondary);
+    border-radius: var(--radius-xl);
+    padding: 24px;
+    width: 90%;
+    max-width: 1000px;
+    max-height: 90vh;
+    overflow: hidden;
+}
+
+.workflow-modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.workflow-modal-header h2 {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+/* ==========================================
+   WORKFLOW BUILDER
+   ========================================== */
+
+.workflow-builder {
+    width: 100%;
+    height: 100%;
+    min-height: 600px;
+    background: var(--bg-secondary);
+    border: 2px solid var(--border-light);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    position: relative;
+}
+
+.workflow-form-layout {
+    display: grid;
+    grid-template-columns: 360px 1fr;
+    gap: 24px;
+    height: calc(100vh - 200px);
+    min-height: 600px;
+}
+
+.workflow-settings-panel {
+    overflow-y: auto;
+    padding-right: 8px;
+}
+
+.workflow-builder-panel {
+    height: 100%;
+}
+
+/* Flow Toolbar */
+.flow-toolbar {
+    display: flex;
+    gap: 8px;
+    padding: 12px 16px;
+    background: var(--bg-secondary);
+    border-radius: var(--radius-full);
+    box-shadow: var(--shadow-md);
+}
+
+/* Step Editor Panel */
+.step-editor-panel {
+    position: absolute;
+    right: 16px;
+    top: 16px;
+    width: 280px;
+    background: var(--bg-secondary);
+    border: 2px solid var(--border-light);
+    border-radius: var(--radius-lg);
+    padding: 20px;
+    box-shadow: var(--shadow-md);
+    z-index: 10;
+}
+
+.step-editor-panel h3 {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 16px;
+}
+
+.step-editor-panel .form-group {
+    margin-bottom: 16px;
+}
+
+.step-editor-panel .form-group label {
+    font-size: 13px;
+}
+
+.step-editor-panel .form-group input,
+.step-editor-panel .form-group textarea {
+    padding: 10px 14px;
+    font-size: 14px;
+}
+
+/* Editable Step Node */
+.step-node.editable {
+    cursor: pointer;
+}
+
+.step-node.editable:hover {
+    transform: translateY(-2px);
+}
+
+.node-drag-handle {
+    color: var(--text-muted);
+    cursor: grab;
+    padding: 4px;
+    margin: -4px;
+    margin-right: 4px;
+}
+
+.node-drag-handle:active {
+    cursor: grabbing;
+}
+
+.node-hint {
+    font-size: 11px;
+    color: var(--text-muted);
+    margin-top: 8px;
+    font-style: italic;
+    opacity: 0.7;
+}
+
+/* Conditional Rule Panel */
+.conditional-rule-panel {
+    background: var(--accent-lime-light);
+    border: 1px solid var(--accent-lime);
+    border-radius: var(--radius-md);
+    padding: 16px;
+    margin-top: -8px;
+}
+
+.rule-preview {
+    font-size: 14px;
+    color: var(--text-secondary);
+    margin-bottom: 12px;
+}
+
+.rule-inputs {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+}
+
+.rule-inputs .form-group {
+    margin-bottom: 0;
+}
+
+.rule-inputs .form-group label {
+    font-size: 12px;
+}
+
+.rule-inputs .form-group input,
+.rule-inputs .form-group select {
+    padding: 8px 12px;
+    font-size: 13px;
+}
+
+/* Checkbox Label */
+.checkbox-label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    font-weight: 500;
+}
+
+.checkbox-label input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+}
+
+/* Form Actions */
+.form-actions {
+    margin-top: 24px;
+    padding-top: 20px;
+    border-top: 1px solid var(--border-light);
+}
+
+/* Steps Summary */
+.steps-summary {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.step-summary-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 12px;
+    background: var(--bg-tertiary);
+    border-radius: var(--radius-md);
+    font-size: 14px;
+}
+
+.step-summary-item .step-number {
+    width: 24px;
+    height: 24px;
+    background: var(--primary-green);
+    color: var(--text-on-dark);
+    border-radius: var(--radius-full);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: 700;
+    flex-shrink: 0;
+}
+
+.step-summary-item .step-name {
+    color: var(--text-primary);
+    font-weight: 500;
+}

@@ -1,0 +1,23 @@
+# BPMS MVP Dependencies
+node_modules/
+
+# Environment files (contains secrets)
+.env
+.env.local
+.env.*.local
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+
+# Docker
+postgres_data/
