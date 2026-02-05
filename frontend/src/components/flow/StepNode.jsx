@@ -1,18 +1,20 @@
 import { Handle, Position } from 'reactflow';
-import { Circle, GitBranch } from 'lucide-react';
+import { GitBranch } from 'lucide-react';
 
 /**
  * Step Node Component
  * Represents a workflow step with optional conditional logic
+ * Supports both horizontal and vertical layouts
  */
 function StepNode({ data, selected }) {
     const hasCondition = data.conditionalRule;
+    const isHorizontal = data.direction === 'horizontal';
 
     return (
         <div className={`flow-node step-node ${selected ? 'selected' : ''} ${hasCondition ? 'has-condition' : ''}`}>
             <Handle
                 type="target"
-                position={Position.Top}
+                position={isHorizontal ? Position.Left : Position.Top}
                 className="node-handle"
             />
 
@@ -32,7 +34,7 @@ function StepNode({ data, selected }) {
 
             <Handle
                 type="source"
-                position={Position.Bottom}
+                position={isHorizontal ? Position.Right : Position.Bottom}
                 className="node-handle"
             />
         </div>
