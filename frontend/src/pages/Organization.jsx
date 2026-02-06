@@ -1,19 +1,39 @@
+import { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
-import { Users, Zap, CheckCircle, Clock, Trash2 } from 'lucide-react';
+import { organizationAPI } from '../api';
+import { Users, Zap, CheckCircle, Clock, Trash2, Loader } from 'lucide-react';
 
 /**
  * Organization Page
- * Organization settings and details
+ * Organization settings and details - uses real API data
  */
 function Organization() {
     const { user } = useAuth();
+    const [stats, setStats] = useState(null);
+    const [loading, setLoading] = useState(true);
 
-    const stats = [
-        { label: 'Total Members', value: '12', icon: Users },
-        { label: 'Active Processes', value: '8', icon: Zap },
-        { label: 'Completed This Month', value: '47', icon: CheckCircle },
-        { label: 'Avg. Completion Time', value: '2.3 days', icon: Clock },
-    ];
+    useEffect(() => {
+        loadStats();
+    }, []);
+
+    const loadStats = async () => {
+        try {
+            setLoading(true);
+            const response = await organizationAPI.getStats();
+            setStats(response.data);
+        } catch (error) {
+            console.error('Failed to load stats:', error);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const statsCards = stats ? [
+        { label: 'Total Members', value: stats.totalMembers, icon: Users },
+        { label: 'Active Processes', value: stats.activeInstances, icon: Zap },
+        { label: 'Completed This Month', value: stats.completedThisMonth, icon: CheckCircle },
+        { label: 'Avg. Completion Time', value: stats.avgCompletionTime ? `${stats.avgCompletionTime} days` : 'N/A', icon: Clock },
+    ] : [];
 
     return (
         <div className="page">
@@ -25,19 +45,26 @@ function Organization() {
             </div>
 
             {/* Stats Grid */}
-            <div className="stats-grid">
-                {stats.map((stat, index) => (
-                    <div key={index} className="stat-card">
-                        <span className="stat-icon">
-                            <stat.icon size={24} />
-                        </span>
-                        <div className="stat-info">
-                            <span className="stat-value">{stat.value}</span>
-                            <span className="stat-label">{stat.label}</span>
+            {loading ? (
+                <div className="loading-state">
+                    <Loader size={24} className="spin" />
+                    Loading stats...
+                </div>
+            ) : (
+                <div className="stats-grid">
+                    {statsCards.map((stat, index) => (
+                        <div key={index} className="stat-card">
+                            <span className="stat-icon">
+                                <stat.icon size={24} />
+                            </span>
+                            <div className="stat-info">
+                                <span className="stat-value">{stat.value}</span>
+                                <span className="stat-label">{stat.label}</span>
+                            </div>
                         </div>
-                    </div>
-                ))}
-            </div>
+                    ))}
+                </div>
+            )}
 
             {/* Organization Details Card */}
             <div className="card mt-3">
@@ -45,7 +72,7 @@ function Organization() {
                 <div className="org-details-grid">
                     <div className="form-group">
                         <label>Organization Name</label>
-                        <input type="text" defaultValue={user?.organizationName || 'Acme Corporation'} />
+                        <input type="text" defaultValue={user?.organizationName || ''} />
                     </div>
                     <div className="form-group">
                         <label>Industry</label>
@@ -80,11 +107,13 @@ function Organization() {
                 <h2 className="card-title">Billing & Plan</h2>
                 <div className="plan-card">
                     <div className="plan-info">
-                        <span className="plan-badge">Pro Plan</span>
-                        <h3>$49/month</h3>
-                        <p>Unlimited processes, 50 team members, API access</p>
+                        <span className="plan-badge">Free Plan</span>
+                        <h3>$0/month</h3>
+                        <p>
+                            {stats?.totalProcesses || 0} workflows, {stats?.totalMembers || 0} team member{stats?.totalMembers !== 1 ? 's' : ''}
+                        </p>
                     </div>
-                    <button className="btn btn-secondary">Manage Subscription</button>
+                    <button className="btn btn-secondary">Upgrade Plan</button>
                 </div>
             </div>
 

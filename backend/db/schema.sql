@@ -23,6 +23,7 @@ CREATE TABLE processes (
     name VARCHAR(255) NOT NULL,
     description TEXT,
     conditional_rule JSONB,
+    is_active BOOLEAN DEFAULT true,
     organization_id INTEGER REFERENCES organizations(id) ON DELETE CASCADE,
     created_by INTEGER REFERENCES users(id),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP

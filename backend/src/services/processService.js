@@ -20,7 +20,8 @@ const getAll = async (organizationId) => {
     const result = await db.query(
         `SELECT p.*, 
             (SELECT COUNT(*) FROM steps WHERE process_id = p.id) as step_count,
-            (SELECT COUNT(*) FROM process_instances WHERE process_id = p.id) as instance_count
+            (SELECT COUNT(*) FROM process_instances WHERE process_id = p.id) as instance_count,
+            (SELECT MAX(started_at) FROM process_instances WHERE process_id = p.id) as last_run_at
      FROM processes p
      WHERE p.organization_id = $1
      ORDER BY p.created_at DESC`,
@@ -60,6 +61,20 @@ const update = async (id, { name, description, conditionalRule }, organizationId
 const remove = async (id, organizationId) => {
     const result = await db.query(
         `DELETE FROM processes WHERE id = $1 AND organization_id = $2 RETURNING id`,
+        [id, organizationId]
+    );
+    return result.rows[0];
+};
+
+/**
+ * Toggle process active status
+ */
+const toggleActive = async (id, organizationId) => {
+    const result = await db.query(
+        `UPDATE processes 
+         SET is_active = NOT COALESCE(is_active, true)
+         WHERE id = $1 AND organization_id = $2
+         RETURNING *`,
         [id, organizationId]
     );
     return result.rows[0];
@@ -122,6 +137,7 @@ module.exports = {
     getById,
     update,
     remove,
+    toggleActive,
     createSteps,
     getSteps,
     updateStep,

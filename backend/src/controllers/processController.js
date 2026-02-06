@@ -108,10 +108,30 @@ const remove = async (req, res) => {
     }
 };
 
+/**
+ * Toggle process active/inactive status
+ */
+const toggleActive = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const process = await processService.toggleActive(id, req.user.organizationId);
+
+        if (!process) {
+            return res.status(404).json({ error: 'Process not found' });
+        }
+
+        res.json(process);
+    } catch (error) {
+        console.error('Toggle process error:', error);
+        res.status(500).json({ error: 'Failed to toggle process status' });
+    }
+};
+
 module.exports = {
     create,
     getAll,
     getById,
     update,
     remove,
+    toggleActive,
 };

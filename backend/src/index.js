@@ -6,6 +6,7 @@ const authRoutes = require('./routes/auth');
 const processRoutes = require('./routes/processes');
 const stepRoutes = require('./routes/steps');
 const instanceRoutes = require('./routes/instances');
+const organizationRoutes = require('./routes/organization');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -19,6 +20,7 @@ app.use('/api/auth', authRoutes);
 app.use('/api/processes', processRoutes);
 app.use('/api/processes', stepRoutes);
 app.use('/api/instances', instanceRoutes);
+app.use('/api/organization', organizationRoutes);
 
 // Health check
 app.get('/api/health', (req, res) => {

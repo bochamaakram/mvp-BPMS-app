@@ -36,4 +36,10 @@ router.put('/:id', processController.update);
  */
 router.delete('/:id', processController.remove);
 
+/**
+ * @route PUT /api/processes/:id/toggle
+ * @desc Toggle process active/inactive status
+ */
+router.put('/:id/toggle', processController.toggleActive);
+
 module.exports = router;

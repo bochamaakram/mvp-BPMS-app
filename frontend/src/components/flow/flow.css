@@ -420,3 +420,178 @@
     color: var(--text-primary);
     font-weight: 500;
 }
+
+/* ==========================================
+   N8N-STYLE WORKFLOW TOGGLE & STATUS
+   ========================================== */
+
+/* Workflow Card Inactive State */
+.workflow-card.workflow-inactive {
+    opacity: 0.7;
+    border-color: var(--border-light);
+}
+
+.workflow-card.workflow-inactive .workflow-icon {
+    background: var(--bg-tertiary);
+    color: var(--text-muted);
+}
+
+.workflow-card.workflow-inactive h3 {
+    color: var(--text-muted);
+}
+
+/* Workflow Header with Toggle */
+.workflow-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    position: relative;
+}
+
+/* n8n-style Toggle Switch */
+.workflow-toggle {
+    position: absolute;
+    top: 0;
+    right: 0;
+    display: inline-flex;
+    align-items: center;
+    cursor: pointer;
+}
+
+.workflow-toggle input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+    position: absolute;
+}
+
+.toggle-slider {
+    position: relative;
+    width: 44px;
+    height: 24px;
+    background: var(--bg-tertiary);
+    border: 2px solid var(--border-light);
+    border-radius: 24px;
+    transition: all 0.3s ease;
+}
+
+.toggle-slider::before {
+    content: '';
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: 16px;
+    height: 16px;
+    background: var(--text-muted);
+    border-radius: 50%;
+    transition: all 0.3s ease;
+}
+
+.workflow-toggle input:checked+.toggle-slider {
+    background: var(--accent-lime);
+    border-color: var(--accent-lime-hover);
+}
+
+.workflow-toggle input:checked+.toggle-slider::before {
+    transform: translateX(20px);
+    background: var(--text-on-lime);
+}
+
+.workflow-toggle:hover .toggle-slider {
+    border-color: var(--primary-green);
+}
+
+/* Status Badge */
+.workflow-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 12px;
+    border-radius: var(--radius-full);
+    font-size: 12px;
+    font-weight: 600;
+    margin: 12px 0;
+}
+
+.workflow-status.status-active {
+    background: rgba(163, 230, 53, 0.15);
+    color: var(--accent-lime-hover);
+    border: 1px solid rgba(163, 230, 53, 0.3);
+}
+
+.workflow-status.status-active::before {
+    content: '';
+    width: 8px;
+    height: 8px;
+    background: var(--accent-lime);
+    border-radius: 50%;
+    animation: pulse 2s infinite;
+}
+
+.workflow-status.status-inactive {
+    background: var(--bg-tertiary);
+    color: var(--text-muted);
+    border: 1px solid var(--border-light);
+}
+
+.workflow-status.status-inactive::before {
+    content: '';
+    width: 8px;
+    height: 8px;
+    background: var(--text-muted);
+    border-radius: 50%;
+}
+
+@keyframes pulse {
+
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.5;
+    }
+}
+
+/* Workflow Stats with Icons */
+.workflow-stats {
+    display: flex;
+    gap: 20px;
+    padding: 12px 0;
+    border-top: 1px solid var(--border-light);
+    border-bottom: 1px solid var(--border-light);
+    margin: 8px 0;
+}
+
+.workflow-stat {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    color: var(--text-muted);
+}
+
+.workflow-stat svg {
+    color: var(--primary-green);
+}
+
+.workflow-stat .stat-number {
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.workflow-stat .stat-text {
+    color: var(--text-muted);
+}
+
+/* Disabled Run Button */
+.workflow-actions .btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.workflow-actions .btn:disabled:hover {
+    transform: none;
+    box-shadow: none;
+}
